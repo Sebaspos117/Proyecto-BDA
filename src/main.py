@@ -10,7 +10,7 @@ import customtkinter
 master = customtkinter.CTk() 
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("dark-blue") 
-master.geometry("400x400")
+master.geometry("600x600")
   
   
 def openAlumnos(): 
@@ -21,7 +21,7 @@ def openAlumnos():
     alumnos.title("ALUMNOS") 
   
     
-    alumnos.geometry("400x400") 
+    alumnos.geometry("600x600") 
 
     customtkinter.CTkLabel(alumnos,  
           text ="ALUMNOS").pack()
@@ -35,13 +35,37 @@ def openAlumnos():
              text ="BUSCAR ALUMNO",
              command = handleSearchAlumno) 
     btnAlumnos.pack(pady = 10) 
-        
+
+    vistaTable = ttk.Treeview(alumnos, columns = (1,2,3,4), show = "headings", height = "5")
+    vistaTable.pack()
+
+    vistaTable.heading(1, text = "Nombre")
+    vistaTable.heading(2, text = "Carrera")
+    vistaTable.heading(3, text = "Cursos")
+    vistaTable.heading(4, text = "Acciones")
+
+    vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+    vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+    vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+
+    style = ttk.Style()
+    style.theme_use("default")
+    style.map("Treeview")
+    style.configure("Treeview", rowheight = 25)
+    style.configure("Treeview.Heading", font = ("Helvetica", 10, "bold"))
+    
 def handleAddAlumno(): 
     alumnosAgregados = customtkinter.CTkToplevel()
 
     alumnosAgregados.title("AGREGAR ALUMNO")
 
-    alumnosAgregados.geometry("400x400")
+    alumnosAgregados.geometry("600x600")
+
+    customtkinter.CTkLabel(alumnosAgregados,  
+        text ="Cédula").pack() 
+
+    entry = customtkinter.CTkEntry(alumnosAgregados)
+    entry.pack()
     
     customtkinter.CTkLabel(alumnosAgregados,  
         text ="Nombre").pack() 
@@ -50,16 +74,16 @@ def handleAddAlumno():
     entry.pack()
 
     customtkinter.CTkLabel(alumnosAgregados,  
-          text ="Carrera").pack() 
+          text ="Apellidos").pack() 
 
     entry = customtkinter.CTkEntry(alumnosAgregados)
     entry.pack()
-
     customtkinter.CTkLabel(alumnosAgregados,  
-          text ="Cursos").pack() 
+          text ="Correo").pack() 
 
     entry = customtkinter.CTkEntry(alumnosAgregados)
     entry.pack()
+
 
     btnAgregarAlumno = customtkinter.CTkButton(alumnosAgregados,  
              text ="AGREGAR ALUMNO",
@@ -70,12 +94,10 @@ def handleAddAlumno():
 def handleSearchAlumno(): 
 
     alumnosBuscados = customtkinter.CTkToplevel()
-
     alumnosBuscados.title("BUSCAR ALUMNO")
+    alumnosBuscados.geometry("600x600")
 
-    alumnosBuscados.geometry("400x400")
 
-    
 def openProfesores(): 
       
     
@@ -85,7 +107,7 @@ def openProfesores():
         profesores.title("PROFESORES") 
   
     
-        profesores.geometry("400x400") 
+        profesores.geometry("600x600") 
   
         customtkinter.CTkLabel(profesores,  
           text ="PROFESORES").pack() 
@@ -100,13 +122,38 @@ def openProfesores():
              command = handleSearchProfesores) 
         btnProfesores.pack(pady = 10)
 
+            
+        vistaTable = ttk.Treeview(profesores, columns = (1,2,3,4), show = "headings", height = "5")
+        vistaTable.pack()
+
+        vistaTable.heading(1, text = "Nombre")
+        vistaTable.heading(2, text = "Carrera")
+        vistaTable.heading(3, text = "Cursos")
+        vistaTable.heading(4, text = "Acciones")
+
+        vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+        vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+        vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+
+        style = ttk.Style()
+        style.theme_use("default")
+        style.map("Treeview")
+        style.configure("Treeview", rowheight = 25)
+        style.configure("Treeview.Heading", font = ("Helvetica", 10, "bold"))
+
 def handleAddProfesores(): 
 
     profesoresAgregados = customtkinter.CTkToplevel()
 
     profesoresAgregados.title("AGREGAR PROFESOR")
 
-    profesoresAgregados.geometry("400x400")
+    profesoresAgregados.geometry("600x600")
+
+    customtkinter.CTkLabel(profesoresAgregados,  
+        text ="Cédula").pack() 
+
+    entry = customtkinter.CTkEntry(profesoresAgregados)
+    entry.pack()
 
     customtkinter.CTkLabel(profesoresAgregados,  
         text ="Nombre").pack() 
@@ -115,11 +162,16 @@ def handleAddProfesores():
     entry.pack()
 
     customtkinter.CTkLabel(profesoresAgregados,  
-        text ="Cursos Impartidos").pack() 
+        text ="Apellidos").pack() 
 
     entry = customtkinter.CTkEntry(profesoresAgregados)
     entry.pack()
 
+    customtkinter.CTkLabel(profesoresAgregados,  
+    text ="Email").pack() 
+
+    entry = customtkinter.CTkEntry(profesoresAgregados)
+    entry.pack()
     btnAgregarProfesor = customtkinter.CTkButton(profesoresAgregados,  
              text ="AGREGAR PROFESOR",
              fg_color	= "green",
@@ -132,7 +184,8 @@ def handleSearchProfesores():
 
     profesoresBuscados.title("BUSCAR PROFESOR")
 
-    profesoresBuscados.geometry("400x400")
+    profesoresBuscados.geometry("600x600")
+
         
 def openCarreras(): 
 
@@ -140,7 +193,7 @@ def openCarreras():
     carreras.title("CARRERAS") 
   
     
-    carreras.geometry("400x400") 
+    carreras.geometry("600x600") 
 
     customtkinter.CTkLabel(carreras,  
         text ="CARRERAS").pack() 
@@ -153,7 +206,24 @@ def openCarreras():
     btnCarreras = customtkinter.CTkButton(carreras,  
         text ="BUSCAR CARRERA",
         command = handleSearchCarreras) 
-    btnCarreras.pack(pady = 10) 
+    btnCarreras.pack(pady = 10)
+
+    vistaTable = ttk.Treeview(carreras, columns = (1,2,3,4), show = "headings", height = "5")
+    vistaTable.pack()
+
+    vistaTable.heading(1, text = "Nombre")
+    vistaTable.heading(2, text = "Carrera")
+    vistaTable.heading(3, text = "Cursos")
+    vistaTable.heading(4, text = "Acciones")
+
+    vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+    vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+    vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+    style = ttk.Style()
+    style.theme_use("default")
+    style.map("Treeview")
+    style.configure("Treeview", rowheight = 25)
+    style.configure("Treeview.Heading", font = ("Helvetica", 10, "bold"))
 
 def handleAddCarreras(): 
 
@@ -161,20 +231,15 @@ def handleAddCarreras():
 
     carrerasAgregadas.title("AGREGAR CARRERA")
 
-    carrerasAgregadas.geometry("400x400")
+    carrerasAgregadas.geometry("600x600")
 
     customtkinter.CTkLabel(carrerasAgregadas,  
         text ="Nombre").pack()
     entry = customtkinter.CTkEntry(carrerasAgregadas)
     entry.pack()
 
-    customtkinter.CTkLabel(carrerasAgregadas,  
-        text ="Cursos").pack()
-    entry = customtkinter.CTkEntry(carrerasAgregadas)
-    entry.pack()
-
     btnAgregarCarrera = customtkinter.CTkButton(carrerasAgregadas,  
-             text ="AGREGAR PROFESOR",
+             text ="AGREGAR CARERA",
              fg_color	= "green",
              command = handleSearchCarreras) 
     btnAgregarCarrera.pack(pady = 10) 
@@ -185,12 +250,12 @@ def handleSearchCarreras():
 
     carrerasBuscadas.title("BUSCAR CARRERA")
 
-    carrerasBuscadas.geometry("400x400")
+    carrerasBuscadas.geometry("600x600")
 
 def openCursos(): 
         cursos = customtkinter.CTkToplevel(master) 
         cursos.title("CURSOS") 
-        cursos.geometry("400x400") 
+        cursos.geometry("600x600") 
 
         customtkinter.CTkLabel(cursos,  
           text ="CURSOS").pack() 
@@ -204,28 +269,45 @@ def openCursos():
              text ="BUSCAR CURSOS",
              command = handleSearchCursos) 
         btnCarreras.pack(pady = 10) 
+
+        vistaTable = ttk.Treeview(cursos, columns = (1,2,3,4), show = "headings", height = "5")
+        vistaTable.pack()
+
+        vistaTable.heading(1, text = "Nombre")
+        vistaTable.heading(2, text = "Carrera")
+        vistaTable.heading(3, text = "Cursos")
+        vistaTable.heading(4, text = "Acciones")
+
+        vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+        vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+        vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+
+        style = ttk.Style()
+        style.theme_use("default")
+        style.map("Treeview")
+        style.configure("Treeview", rowheight = 25)
+        style.configure("Treeview.Heading", font = ("Helvetica", 10, "bold"))
 def handleAddCursos(): 
 
     cursosAgregadas = customtkinter.CTkToplevel()
 
     cursosAgregadas.title("AGREGAR CURSOS")
 
-    cursosAgregadas.geometry("400x400")
+    cursosAgregadas.geometry("600x600")
 
     customtkinter.CTkLabel(cursosAgregadas,  
         text ="Nombre").pack() 
     entry = customtkinter.CTkEntry(cursosAgregadas)
     entry.pack()
-
     trimestres = customtkinter.CTkComboBox(cursosAgregadas, text_color= "black" , state= "readonly", values=["Trimrestre 1", "Trimrestre 2", "Trimrestre 3", "Trimrestre 4" , "Trimrestre 5" , "Trimrestre 6" , "Trimrestre 7" , "Trimrestre 3", "Trimrestre 8", "Trimrestre 9" , "Trimrestre 10", "Trimrestre 11", "Trimrestre 12" , "Trimrestre 13", "Trimrestre 14", "Trimrestre 15" , "Trimrestre 16"])
-    trimestres.place(x=130, y=70)
-
+    trimestres.pack()
     horarios = customtkinter.CTkComboBox(cursosAgregadas,text_color= "black" , state= "readonly",  values=["Mañana", "Tarde", "Noche", "Sabatinos"] )
-    horarios.place(x=130, y=110)
-
+    horarios.pack()
     horarios = customtkinter.CTkComboBox(cursosAgregadas,text_color= "black" , state= "readonly", values=["Presencial", "Virtual", "Híbrida"] )
  
-    horarios.place(x=130, y=150)
+    horarios.pack()
+
+
 
     btnAgregarCursos = customtkinter.CTkButton(cursosAgregadas,  
              text ="AGREGAR CURSO",
@@ -241,7 +323,7 @@ def handleSearchCursos():
 
     cursosBuscadas.title("BUSCAR CURSOS")
 
-    cursosBuscadas.geometry("400x400")
+    cursosBuscadas.geometry("600x600")
 
 label = customtkinter.CTkLabel(master,  
               text ="INVENIO") 
