@@ -32,14 +32,14 @@ def conexion(table):
     query= f""" SELECT * FROM {table} """
     cursor.execute(query)
     row = cursor.fetchall()
+    print(row)
     return row
     
    
   
 def openAlumnos(): 
     
-    conexion('bda.student')
-
+    
     alumnos = customtkinter.CTkToplevel(master) 
   
     
@@ -68,8 +68,8 @@ def openAlumnos():
     vistaTable.heading(2, text = "Carrera")
     vistaTable.heading(3, text = "Cursos")
     
-    #for x in row:
-     #   vistaTable.insert("", "end", values = (x[0], x[1], x[2]))
+    for x in conexion('bda.student'):
+        vistaTable.insert("", "end", values = (x[1], x[2], x[3]))
         
 
     style = ttk.Style()
@@ -158,9 +158,8 @@ def openProfesores():
         vistaTable.heading(3, text = "Cursos")
         vistaTable.heading(4, text = "Acciones")
 
-        vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
-        vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
-        vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+        for x in conexion('bda.profesor'):
+            vistaTable.insert("", "end", values = (x[1]+' '+x[3], x[2], x[4]))
 
         style = ttk.Style()
         style.theme_use("default")
@@ -243,9 +242,8 @@ def openCarreras():
     vistaTable.heading(3, text = "Cursos")
     vistaTable.heading(4, text = "Acciones")
 
-    vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
-    vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
-    vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+    for x in conexion('bda.carreras'):
+            vistaTable.insert("", "end", values = (x[1]))
     style = ttk.Style()
     style.theme_use("default")
     style.map("Treeview")
@@ -305,9 +303,8 @@ def openCursos():
         vistaTable.heading(3, text = "Cursos")
         vistaTable.heading(4, text = "Acciones")
 
-        vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
-        vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
-        vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+        for x in conexion('bda.cursos'):
+            vistaTable.insert("", "end", values = (x[1], x[2], x[3],x[4]))
 
         style = ttk.Style()
         style.theme_use("default")
