@@ -4,16 +4,41 @@ from email.policy import default
 from os import close
 from tkinter import *
 from tkinter import ttk
+from multiprocessing import connection
+from tkinter import EXCEPTION
+import psycopg2
+
 
 import customtkinter
+import conexion_postgresql
 
 master = customtkinter.CTk() 
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("dark-blue") 
 master.geometry("600x600")
-  
+
+
+def conexion(table):
+    conn = psycopg2.connect(
+            host='localhost',
+            user='postgres',
+            password='mandril77',
+            database='Proyecto',
+            port='5432'
+    )
+    #conn.autocommit= True
+
+    cursor = conn.cursor()
+    query= f""" SELECT * FROM {table} """
+    cursor.execute(query)
+    row = cursor.fetchall()
+    return row
+    
+   
   
 def openAlumnos(): 
+    
+    conexion('bda.student')
 
     alumnos = customtkinter.CTkToplevel(master) 
   
@@ -36,23 +61,25 @@ def openAlumnos():
              command = handleSearchAlumno) 
     btnAlumnos.pack(pady = 10) 
 
-    vistaTable = ttk.Treeview(alumnos, columns = (1,2,3,4), show = "headings", height = "5")
+    vistaTable = ttk.Treeview(alumnos, columns = (1,2,3), show = "headings", height = "5")
     vistaTable.pack()
 
     vistaTable.heading(1, text = "Nombre")
     vistaTable.heading(2, text = "Carrera")
     vistaTable.heading(3, text = "Cursos")
-    vistaTable.heading(4, text = "Acciones")
-
-    vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
-    vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
-    vistaTable.insert("", "end", values = ("Juan", "Ingenieria", "Matematicas", "Editar"))
+    
+    #for x in row:
+     #   vistaTable.insert("", "end", values = (x[0], x[1], x[2]))
+        
 
     style = ttk.Style()
     style.theme_use("default")
     style.map("Treeview")
     style.configure("Treeview", rowheight = 25)
     style.configure("Treeview.Heading", font = ("Helvetica", 10, "bold"))
+
+    
+    
     
 def handleAddAlumno(): 
     alumnosAgregados = customtkinter.CTkToplevel()
