@@ -248,9 +248,9 @@ def openCarreras():
     btnCarreras = customtkinter.CTkButton(carreras,  
         text ="BUSCAR CARRERA",
         command = handleSearchCarreras) 
-    btnCarreras.grid(row=1, column=2, sticky=W, pady=2)
+    btnCarreras.grid(row=1, column=2, sticky=W, pady=2, padx=10)
 
-    vistaTable = ttk.Treeview(carreras, columns = (1), show = "headings", height = "5")
+    vistaTable = ttk.Treeview(carreras, columns = (1), show = "headings", height = "5", selectmode = "browse", style = "Treeview", padding = 10)
     vistaTable.grid(row=2, column=0, columnspan=4)
 
     vistaTable.heading(1, text = "Nombre")
@@ -306,14 +306,14 @@ def openCursos():
         entry.focus_set() 
 
         btnCursos = customtkinter.CTkButton(cursos,
-            text ="AGREGAR CURSO",
-            command = handleAddCursos)
-        btnCursos.grid(row=1, column=1, sticky=W, pady=2)
-
-        btnCursos = customtkinter.CTkButton(cursos,
             text ="BUSCAR CURSO",
             command = handleSearchCursos)
+        btnCursos.grid(row=1, column=1, sticky=W, pady=2)
+        btnCursos = customtkinter.CTkButton(cursos,
+            text ="AGREGAR CURSO",
+            command = handleAddCursos)
         btnCursos.grid(row=1, column=2, sticky=W, pady=2)
+
 
 
         vistaTable = ttk.Treeview(cursos, columns = (1,2,3,4), show = "headings", height = "5")
@@ -384,26 +384,26 @@ def handleSearchCursos():
 label = customtkinter.CTkLabel(master,  
               text ="INVENIO") 
   
-label.grid(row=0, column=0,  pady=2)
+label.grid(row=0, column=1, sticky=W, pady=2, padx=200)
   
 btnAlumnos = customtkinter.CTkButton(master,  
              text ="ALUMNOS",  
              command = openAlumnos) 
-btnAlumnos.grid(row=1, column=0,  pady=2)
+btnAlumnos.grid(row=1, column=1,  pady=2, padx=200)
 
 btnProfesores = customtkinter.CTkButton(master,  
              text ="PROFESORES",  
              command = openProfesores) 
-btnProfesores.grid(row=2, column=0, pady=2)
+btnProfesores.grid(row=2, column=1, sticky=W, pady=10, padx=200)
 
 btnCarreras = customtkinter.CTkButton(master,  
              text ="CARRERAS",  
              command = openCarreras) 
-btnCarreras.grid(row=3, column=0, pady=2)
+btnCarreras.grid(row=3, column=1, sticky=W, pady=10, padx=200)
 
 btnCursos = customtkinter.CTkButton(master,  
              text ="CURSOS",  
              command = openCursos) 
-btnCursos.grid(row=4, column=0, pady=2, padx=200)
+btnCursos.grid(row=4, column=0, pady=2)
 
 master.mainloop()
