@@ -1,15 +1,14 @@
 from cgitb import text
 from distutils.cmd import Command
 from email.policy import default
+from multiprocessing import connection
 from os import close
 from tkinter import *
-from tkinter import ttk
-from multiprocessing import connection
-from tkinter import EXCEPTION
-import psycopg2
-
+from tkinter import EXCEPTION, ttk
 
 import customtkinter
+import psycopg2
+
 import conexion_postgresql
 
 master = customtkinter.CTk() 
@@ -49,37 +48,44 @@ def openAlumnos():
     alumnos.geometry("600x600") 
 
     customtkinter.CTkLabel(alumnos,  
-          text ="ALUMNOS").pack()
+          text ="ALUMNOS").grid(row=0, column=0, sticky=W, pady=2)
+    customtkinter.CTkLabel(alumnos,  
+          text ="Buscar").grid(row=1, column=0, sticky=W, pady=2)
 
-    btnAlumnos = customtkinter.CTkButton(alumnos,  
-             text ="AGREGAR ALUMNO",
-             command = handleAddAlumno) 
-    btnAlumnos.pack(pady = 10) 
+    entry = customtkinter.CTkEntry(alumnos, textvariable = "Buscar")
+    entry.grid(row=1, column=1, sticky=W, pady=2)
+    entry.focus_set()
+
 
     btnAlumnos = customtkinter.CTkButton(alumnos,  
              text ="BUSCAR ALUMNO",
              command = handleSearchAlumno) 
-    btnAlumnos.pack(pady = 10) 
+    btnAlumnos.grid(row=1, column=2, sticky=W, pady=2)
+
+    btnAgregarAlumno = customtkinter.CTkButton(alumnos,
+                text ="AGREGAR ALUMNO",
+                fg_color	= "green",
+                command = handleAddAlumno)
+    btnAgregarAlumno.grid(row=1, column=3, sticky=W, pady=2)
 
     vistaTable = ttk.Treeview(alumnos, columns = (1,2,3), show = "headings", height = "5")
-    vistaTable.pack()
+    vistaTable.grid(row=2, column=0, columnspan=4)
 
+    vistaTable.heading(3, text = "Cédula")
     vistaTable.heading(1, text = "Nombre")
-    vistaTable.heading(2, text = "Carrera")
-    vistaTable.heading(3, text = "Cursos")
+    vistaTable.heading(2, text = "Apellidos") 
+    vistaTable.heading(3, text = "Correo")
     
     for x in conexion('bda.student'):
         vistaTable.insert("", "end", values = (x[1], x[2], x[3]))
         
+    # style = ttk.Style()
+    # style.theme_use("clam")
+    # style.map("Treeview")
+    # style.configure("Treeview", rowheight = 25)
+    # style.configure("Treeview.Heading", font = ("Helvetica", 10, "bold"))
+    # style.configure("Treeview", font = ("Helvetica", 10))
 
-    style = ttk.Style()
-    style.theme_use("default")
-    style.map("Treeview")
-    style.configure("Treeview", rowheight = 25)
-    style.configure("Treeview.Heading", font = ("Helvetica", 10, "bold"))
-
-    
-    
     
 def handleAddAlumno(): 
     alumnosAgregados = customtkinter.CTkToplevel()
@@ -89,45 +95,41 @@ def handleAddAlumno():
     alumnosAgregados.geometry("600x600")
 
     customtkinter.CTkLabel(alumnosAgregados,  
-        text ="Cédula").pack() 
+        text ="Cédula").grid(row=0, column=0, sticky=W, pady=2)
 
     entry = customtkinter.CTkEntry(alumnosAgregados)
-    entry.pack()
+    entry.grid(row=0, column=1, sticky=W, pady=2)
     
     customtkinter.CTkLabel(alumnosAgregados,  
-        text ="Nombre").pack() 
+        text ="Nombre").grid(row=1, column=0, sticky=W, pady=2) 
 
     entry = customtkinter.CTkEntry(alumnosAgregados)
-    entry.pack()
+    entry.grid(row=1, column=1, sticky=W, pady=2)
 
     customtkinter.CTkLabel(alumnosAgregados,  
-          text ="Apellidos").pack() 
+          text ="Apellidos").grid(row=2, column=0, sticky=W, pady=2)
 
     entry = customtkinter.CTkEntry(alumnosAgregados)
-    entry.pack()
+    entry.grid(row=2, column=1, sticky=W, pady=2)
     customtkinter.CTkLabel(alumnosAgregados,  
-          text ="Correo").pack() 
+          text ="Correo").grid(row=3, column=0, sticky=W, pady=2)
 
     entry = customtkinter.CTkEntry(alumnosAgregados)
-    entry.pack()
+    entry.grid(row=3, column=1, sticky=W, pady=2)
 
 
     btnAgregarAlumno = customtkinter.CTkButton(alumnosAgregados,  
              text ="AGREGAR ALUMNO",
              fg_color	= "green",
              command = handleSearchAlumno) 
-    btnAgregarAlumno.pack(pady = 10) 
+    btnAgregarAlumno.grid(row=4, column=1, sticky=W, pady=2)
 
 def handleSearchAlumno(): 
-
-    alumnosBuscados = customtkinter.CTkToplevel()
-    alumnosBuscados.title("BUSCAR ALUMNO")
-    alumnosBuscados.geometry("600x600")
+    print("ADD Alumno")
 
 
 def openProfesores(): 
       
-    
         profesores = customtkinter.CTkToplevel(master) 
   
     
@@ -137,26 +139,32 @@ def openProfesores():
         profesores.geometry("600x600") 
   
         customtkinter.CTkLabel(profesores,  
-          text ="PROFESORES").pack() 
+          text ="PROFESORES").grid(row=0, column=0, sticky=W, pady=2)
+
+        customtkinter.CTkLabel(profesores,  
+            text ="Buscar").grid(row=1, column=0, sticky=W, pady=2)
+
+        entry = customtkinter.CTkEntry(profesores, textvariable = "Buscar")
+        entry.grid(row=1, column=1, sticky=W, pady=2)
+        entry.focus_set()
 
         btnProfesores = customtkinter.CTkButton(profesores,  
              text ="AGREGAR PROFESOR",
              command = handleAddProfesores) 
-        btnProfesores.pack(pady = 10) 
+        btnProfesores.grid(row=1, column=1, sticky=W, pady=2)
 
         btnProfesores = customtkinter.CTkButton(profesores,  
              text ="BUSCAR PROFESOR",
              command = handleSearchProfesores) 
-        btnProfesores.pack(pady = 10)
-
+        btnProfesores.grid(row=1, column=2, sticky=W, pady=2)
             
         vistaTable = ttk.Treeview(profesores, columns = (1,2,3,4), show = "headings", height = "5")
-        vistaTable.pack()
+        vistaTable.grid(row=2, column=0, columnspan=4)
 
+        vistaTable.heading(4, text = "Cédula")
         vistaTable.heading(1, text = "Nombre")
-        vistaTable.heading(2, text = "Carrera")
-        vistaTable.heading(3, text = "Cursos")
-        vistaTable.heading(4, text = "Acciones")
+        vistaTable.heading(2, text = "Apellidos")
+        vistaTable.heading(3, text = "Correo")
 
         for x in conexion('bda.profesor'):
             vistaTable.insert("", "end", values = (x[1]+' '+x[3], x[2], x[4]))
@@ -176,33 +184,32 @@ def handleAddProfesores():
     profesoresAgregados.geometry("600x600")
 
     customtkinter.CTkLabel(profesoresAgregados,  
-        text ="Cédula").pack() 
+        text ="Cédula").grid(row=0, column=0, sticky=W, pady=2)
 
     entry = customtkinter.CTkEntry(profesoresAgregados)
-    entry.pack()
+    entry.grid(row=0, column=1, sticky=W, pady=2)
 
     customtkinter.CTkLabel(profesoresAgregados,  
-        text ="Nombre").pack() 
+        text ="Nombre").grid(row=1, column=0, sticky=W, pady=2)
 
     entry = customtkinter.CTkEntry(profesoresAgregados)
-    entry.pack()
+    entry.grid(row=1, column=1, sticky=W, pady=2)
 
     customtkinter.CTkLabel(profesoresAgregados,  
-        text ="Apellidos").pack() 
+        text ="Apellidos").grid(row=2, column=0, sticky=W, pady=2) 
 
     entry = customtkinter.CTkEntry(profesoresAgregados)
-    entry.pack()
+    entry.grid(row=2, column=1, sticky=W, pady=2)
 
     customtkinter.CTkLabel(profesoresAgregados,  
-    text ="Email").pack() 
-
+    text ="Email").grid(row=3, column=0, sticky=W, pady=2)
     entry = customtkinter.CTkEntry(profesoresAgregados)
-    entry.pack()
+    entry.grid(row=3, column=1, sticky=W, pady=2)
     btnAgregarProfesor = customtkinter.CTkButton(profesoresAgregados,  
              text ="AGREGAR PROFESOR",
              fg_color	= "green",
              command = handleSearchProfesores) 
-    btnAgregarProfesor.pack(pady = 10) 
+    btnAgregarProfesor.grid(row=4, column=1, sticky=W, pady=2)
 
 def handleSearchProfesores(): 
 
@@ -222,25 +229,29 @@ def openCarreras():
     carreras.geometry("600x600") 
 
     customtkinter.CTkLabel(carreras,  
-        text ="CARRERAS").pack() 
+        text ="CARRERAS").grid(row=0, column=0, sticky=W, pady=2)
+
+    customtkinter.CTkLabel(carreras,
+        text ="Buscar").grid(row=1, column=0, sticky=W, pady=2)
+
+    entry = customtkinter.CTkEntry(carreras, textvariable = "Buscar")
+    entry.grid(row=1, column=1, sticky=W, pady=2)
+    entry.focus_set()
 
     btnCarreras = customtkinter.CTkButton(carreras,  
         text ="AGREGAR CARRERA",
         command = handleAddCarreras) 
-    btnCarreras.pack(pady = 10) 
+    btnCarreras.grid(row=1, column=1, sticky=W, pady=2) 
 
     btnCarreras = customtkinter.CTkButton(carreras,  
         text ="BUSCAR CARRERA",
         command = handleSearchCarreras) 
-    btnCarreras.pack(pady = 10)
+    btnCarreras.grid(row=1, column=2, sticky=W, pady=2)
 
-    vistaTable = ttk.Treeview(carreras, columns = (1,2,3,4), show = "headings", height = "5")
-    vistaTable.pack()
+    vistaTable = ttk.Treeview(carreras, columns = (1), show = "headings", height = "5")
+    vistaTable.grid(row=2, column=0, columnspan=4)
 
     vistaTable.heading(1, text = "Nombre")
-    vistaTable.heading(2, text = "Carrera")
-    vistaTable.heading(3, text = "Cursos")
-    vistaTable.heading(4, text = "Acciones")
 
     for x in conexion('bda.carreras'):
             vistaTable.insert("", "end", values = (x[1]))
@@ -259,15 +270,15 @@ def handleAddCarreras():
     carrerasAgregadas.geometry("600x600")
 
     customtkinter.CTkLabel(carrerasAgregadas,  
-        text ="Nombre").pack()
+        text ="Nombre").grid(row=0, column=0, sticky=W, pady=2)
     entry = customtkinter.CTkEntry(carrerasAgregadas)
-    entry.pack()
+    entry.grid(row=0, column=1, sticky=W, pady=2)
 
     btnAgregarCarrera = customtkinter.CTkButton(carrerasAgregadas,  
              text ="AGREGAR CARERA",
              fg_color	= "green",
              command = handleSearchCarreras) 
-    btnAgregarCarrera.pack(pady = 10) 
+    btnAgregarCarrera.grid(row=1, column=1, sticky=W, pady=2)
 
 def handleSearchCarreras(): 
 
@@ -283,25 +294,33 @@ def openCursos():
         cursos.geometry("600x600") 
 
         customtkinter.CTkLabel(cursos,  
-          text ="CURSOS").pack() 
+          text ="CURSOS").grid(row=0, column=0, sticky=W, pady=2)
 
-        btnCarreras = customtkinter.CTkButton(cursos,  
-             text ="AGREGAR CURSOS",
-             command = handleAddCursos) 
-        btnCarreras.pack(pady = 10) 
+        customtkinter.CTkLabel(cursos,  
+          text ="Buscar").grid(row=1, column=0, sticky=W, pady=2)
 
-        btnCarreras = customtkinter.CTkButton(cursos,  
-             text ="BUSCAR CURSOS",
-             command = handleSearchCursos) 
-        btnCarreras.pack(pady = 10) 
+        entry = customtkinter.CTkEntry(cursos, textvariable = "Buscar")
+        entry.grid(row=1, column=1, sticky=W, pady=2)
+        entry.focus_set() 
+
+        btnCursos = customtkinter.CTkButton(cursos,
+            text ="AGREGAR CURSO",
+            command = handleAddCursos)
+        btnCursos.grid(row=1, column=1, sticky=W, pady=2)
+
+        btnCursos = customtkinter.CTkButton(cursos,
+            text ="BUSCAR CURSO",
+            command = handleSearchCursos)
+        btnCursos.grid(row=1, column=2, sticky=W, pady=2)
+
 
         vistaTable = ttk.Treeview(cursos, columns = (1,2,3,4), show = "headings", height = "5")
-        vistaTable.pack()
+        vistaTable.grid(row=2, column=0, columnspan=4)
 
         vistaTable.heading(1, text = "Nombre")
-        vistaTable.heading(2, text = "Carrera")
-        vistaTable.heading(3, text = "Cursos")
-        vistaTable.heading(4, text = "Acciones")
+        vistaTable.heading(2, text = "Periodo")
+        vistaTable.heading(4, text = "Horario")
+        vistaTable.heading(3, text = "Modalidad")
 
         for x in conexion('bda.cursos'):
             vistaTable.insert("", "end", values = (x[1], x[2], x[3],x[4]))
@@ -311,6 +330,11 @@ def openCursos():
         style.map("Treeview")
         style.configure("Treeview", rowheight = 25)
         style.configure("Treeview.Heading", font = ("Helvetica", 10, "bold"))
+
+        btnCarreras = customtkinter.CTkButton(cursos,  
+             text ="AGREGAR CURSOS",
+             command = handleAddCursos) 
+        btnCarreras.grid(row=3, column=1, sticky=W, pady=2)
 def handleAddCursos(): 
 
     cursosAgregadas = customtkinter.CTkToplevel()
@@ -320,26 +344,32 @@ def handleAddCursos():
     cursosAgregadas.geometry("600x600")
 
     customtkinter.CTkLabel(cursosAgregadas,  
-        text ="Nombre").pack() 
+        text ="Nombre").grid(row=0, column=0, sticky=W, pady=2)
     entry = customtkinter.CTkEntry(cursosAgregadas)
-    entry.pack()
+    entry.grid(row=0, column=1, sticky=W, pady=2)
+
+    customtkinter.CTkLabel(cursosAgregadas,
+        text ="Periodo").grid(row=1, column=0, sticky=W, pady=2)
     trimestres = customtkinter.CTkComboBox(cursosAgregadas, text_color= "black" , state= "readonly", values=["Trimrestre 1", "Trimrestre 2", "Trimrestre 3", "Trimrestre 4" , "Trimrestre 5" , "Trimrestre 6" , "Trimrestre 7" , "Trimrestre 3", "Trimrestre 8", "Trimrestre 9" , "Trimrestre 10", "Trimrestre 11", "Trimrestre 12" , "Trimrestre 13", "Trimrestre 14", "Trimrestre 15" , "Trimrestre 16"])
-    trimestres.pack()
+    trimestres.grid(row=1, column=1, sticky=W, pady=2)
+
+    customtkinter.CTkLabel(cursosAgregadas,
+        text ="Horario").grid(row=2, column=0, sticky=W, pady=2)
+
     horarios = customtkinter.CTkComboBox(cursosAgregadas,text_color= "black" , state= "readonly",  values=["Mañana", "Tarde", "Noche", "Sabatinos"] )
-    horarios.pack()
+    horarios.grid(row=2, column=1, sticky=W, pady=2)
+
+    customtkinter.CTkLabel(cursosAgregadas,
+        text ="Modalidad").grid(row=3, column=0, sticky=W, pady=2)
     horarios = customtkinter.CTkComboBox(cursosAgregadas,text_color= "black" , state= "readonly", values=["Presencial", "Virtual", "Híbrida"] )
  
-    horarios.pack()
-
-
+    horarios.grid(row=3, column=1, sticky=W, pady=2)
 
     btnAgregarCursos = customtkinter.CTkButton(cursosAgregadas,  
              text ="AGREGAR CURSO",
              fg_color	= "green",
              command = handleSearchCarreras) 
-    btnAgregarCursos.pack(pady = 10)
-
-    btnAgregarCursos.place(relx=0.5, rely=0.5, anchor=CENTER)
+    btnAgregarCursos.grid(row=4, column=1, sticky=W, pady=2)
 
 def handleSearchCursos(): 
 
@@ -352,26 +382,26 @@ def handleSearchCursos():
 label = customtkinter.CTkLabel(master,  
               text ="INVENIO") 
   
-label.pack(pady = 10) 
+label.grid(row=0, column=0,  pady=2)
   
 btnAlumnos = customtkinter.CTkButton(master,  
              text ="ALUMNOS",  
              command = openAlumnos) 
-btnAlumnos.pack(pady = 10) 
+btnAlumnos.grid(row=1, column=0,  pady=2)
 
 btnProfesores = customtkinter.CTkButton(master,  
              text ="PROFESORES",  
              command = openProfesores) 
-btnProfesores.pack(pady = 10) 
+btnProfesores.grid(row=2, column=0, pady=2)
 
 btnCarreras = customtkinter.CTkButton(master,  
              text ="CARRERAS",  
              command = openCarreras) 
-btnCarreras.pack(pady = 10) 
+btnCarreras.grid(row=3, column=0, pady=2)
 
 btnCursos = customtkinter.CTkButton(master,  
              text ="CURSOS",  
              command = openCursos) 
-btnCursos.pack(pady = 10) 
+btnCursos.grid(row=4, column=0, pady=2)
 
 master.mainloop()
