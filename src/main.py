@@ -9,7 +9,6 @@ from tkinter import EXCEPTION, ttk
 import customtkinter
 import psycopg2
 
-import conexion_postgresql
 
 master = customtkinter.CTk() 
 customtkinter.set_appearance_mode("System")
@@ -17,7 +16,7 @@ customtkinter.set_default_color_theme("dark-blue")
 master.geometry("600x600")
 
 
-def conexion(table):
+def conexion(sele,query):
     conn = psycopg2.connect(
             host='localhost',
             user='postgres',
@@ -25,15 +24,18 @@ def conexion(table):
             database='Proyecto',
             port='5432'
     )
-    #conn.autocommit= True
 
-    cursor = conn.cursor()
-    query= f""" SELECT * FROM {table} """
-    cursor.execute(query)
-    row = cursor.fetchall()
-    print(row)
-    return row
-    
+    if sele == '1':
+        cursor = conn.cursor()
+        cursor.execute(query)
+        row = cursor.fetchall()
+        cursor.close()
+        return row
+        
+    elif sele == '2':
+        cursor = conn.cursor()
+        cursor.execute(query)
+        print(query)
    
   
 def openAlumnos(): 
@@ -62,11 +64,11 @@ def openAlumnos():
              command = handleSearchAlumno) 
     btnAlumnos.grid(row=1, column=2, sticky=W, pady=2)
 
-    btnAgregarAlumno = customtkinter.CTkButton(alumnos,
-                text ="AGREGAR ALUMNO",
-                fg_color	= "green",
+    btnAgregarAlumno1 = customtkinter.CTkButton(alumnos,
+                text ="AGREGAR",
+                fg_color = "green",
                 command = handleAddAlumno)
-    btnAgregarAlumno.grid(row=1, column=3, sticky=W, pady=2)
+    btnAgregarAlumno1.grid(row=1, column=3, sticky=W, pady=2)
 
     vistaTable = ttk.Treeview(alumnos, columns = (1,2,3), show = "headings", height = "5")
     vistaTable.grid(row=2, column=0, columnspan=4)
@@ -76,7 +78,7 @@ def openAlumnos():
     vistaTable.heading(2, text = "Apellidos") 
     vistaTable.heading(3, text = "Correo")
     
-    for x in conexion('bda.student'):
+    for x in conexion('1',f""" SELECT * FROM bda.student """):
         vistaTable.insert("", "end", values = (x[1], x[2], x[3]))
         
     # style = ttk.Style()
@@ -97,31 +99,31 @@ def handleAddAlumno():
     customtkinter.CTkLabel(alumnosAgregados,  
         text ="Cédula").grid(row=0, column=0, sticky=W, pady=2)
 
-    entry = customtkinter.CTkEntry(alumnosAgregados)
-    entry.grid(row=0, column=1, sticky=W, pady=2)
+    cedula = customtkinter.CTkEntry(alumnosAgregados,)
+    cedula.grid(row=0, column=1, sticky=W, pady=2)
     
     customtkinter.CTkLabel(alumnosAgregados,  
         text ="Nombre").grid(row=1, column=0, sticky=W, pady=2) 
 
-    entry = customtkinter.CTkEntry(alumnosAgregados)
-    entry.grid(row=1, column=1, sticky=W, pady=2)
+    nombre = customtkinter.CTkEntry(alumnosAgregados)
+    nombre.grid(row=1, column=1, sticky=W, pady=2)
 
     customtkinter.CTkLabel(alumnosAgregados,  
           text ="Apellidos").grid(row=2, column=0, sticky=W, pady=2)
 
-    entry = customtkinter.CTkEntry(alumnosAgregados)
-    entry.grid(row=2, column=1, sticky=W, pady=2)
+    apellidos = customtkinter.CTkEntry(alumnosAgregados)
+    apellidos.grid(row=2, column=1, sticky=W, pady=2)
     customtkinter.CTkLabel(alumnosAgregados,  
           text ="Correo").grid(row=3, column=0, sticky=W, pady=2)
 
-    entry = customtkinter.CTkEntry(alumnosAgregados)
-    entry.grid(row=3, column=1, sticky=W, pady=2)
+    email = customtkinter.CTkEntry(alumnosAgregados)
+    email.grid(row=3, column=1, sticky=W, pady=2)
 
 
     btnAgregarAlumno = customtkinter.CTkButton(alumnosAgregados,  
              text ="AGREGAR ALUMNO",
-             fg_color	= "green",
-             command = handleSearchAlumno) 
+             fg_color= "green",
+             command = conexion('2',(f""" INSERT INTO bda.student (nombreestudiante,apellidos,email,cedula) VALUES ('{nombre}','{apellidos}','{email}','{cedula}')""")))
     btnAgregarAlumno.grid(row=4, column=1, sticky=W, pady=2)
 
 def handleSearchAlumno(): 
@@ -402,6 +404,6 @@ btnCarreras.grid(row=3, column=0, pady=2)
 btnCursos = customtkinter.CTkButton(master,  
              text ="CURSOS",  
              command = openCursos) 
-btnCursos.grid(row=4, column=0, pady=2)
+btnCursos.grid(row=4, column=0, pady=2, padx=200)
 
 master.mainloop()
